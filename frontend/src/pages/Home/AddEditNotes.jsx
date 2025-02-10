@@ -2,15 +2,51 @@ import React, { useState } from 'react'
 import TagInput from '../../components/Input/TagInput';
 import { MdClose } from "react-icons/md";
 
-const AddEditNotes = () => {
+const AddEditNotes = ({ noteData, type, onClose }) => {
 
   const [title,setTitle] = useState("");
   const [content,setContent] = useState("");
   const [tags, setTags] = useState([]);
 
-  return (
-    <div>
+  const [error ,setError] = useState(null);
 
+  // Add Note
+  const addNewNote = async () =>{
+
+  };
+
+  // Edit Note
+  const editNote = async () =>{
+
+  };
+  
+  const handleAddNote = () =>{
+    if(!title){
+      setError("Please enter the title");
+      return;
+    }
+    if(!content)
+    {
+      setError("Please enter the content");
+      return;
+    }
+    
+    setError("");
+
+    if(type === 'edit')
+    {
+      editNote();
+    }else{
+      addNewNote();
+    }
+  }
+
+  return (
+    <div className='relative'>
+
+        <button className='w-5 h-5 rounded-full flex items-center absolute -top-2 -right-2 hover:bg-red-500' onClick={onClose}>
+          <MdClose className='text-xl text-red-400 hover:text-black' />
+        </button>
 
         <div className='flex flex-col gap-2'>
           <label className='input-label'>TITLE</label>
@@ -40,7 +76,11 @@ const AddEditNotes = () => {
           <TagInput tags={tags} setTags={setTags}/>
         </div>
 
-        <button className="btn-primary font-medium mt-5 p-3" onClick={()=>{}}>
+        {error && <p className='text-red-500 text-xs pt-4'>{error}</p>}
+
+        <button 
+          className="btn-primary font-medium mt-5 p-3" 
+          onClick={handleAddNote}>
             ADD
         </button>
     </div>
