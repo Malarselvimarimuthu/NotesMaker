@@ -86,6 +86,7 @@ app.post("/create-account",async (req,res) => {
     });
 });
 
+// Login 
 app.post("/login",async(req,res) => {
     const { email , password } = req.body;
 
@@ -128,6 +129,20 @@ app.post("/login",async(req,res) => {
     }
 
 });
+
+// Get User
+app.get("/get-user",authenticateToken,async (req,res) => {
+    const { user } = req.user;
+
+    const isUser  = await User.findOne({ _id: user._id });
+
+    if(!isUser) return res.sendStatus(401);
+
+    return res.json({
+        user: isUser,
+        message:"",
+    });
+})
 
 // Add Note
 app.post("/add-note", authenticateToken, async (req,res) =>{
@@ -277,7 +292,7 @@ app.put("/updat-note-pinned/:noteId", authenticateToken, async (req,res) =>{
                     .json({ error:true, message: "Note not found"});
         }
 
-        if(isPinned) note.isPinned = isPinned;
+        note.isPinned = isPinned;
 
         await note.save();
         
