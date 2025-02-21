@@ -139,7 +139,12 @@ app.get("/get-user",authenticateToken,async (req,res) => {
     if(!isUser) return res.sendStatus(401);
 
     return res.json({
-        user: isUser,
+        user: {
+            fullName: isUser.fullName,
+            email: isUser.email,
+            _id: isUser._id,
+            createdOn: isUser.createdOn,
+        },
         message:"",
     });
 })
@@ -307,6 +312,22 @@ app.put("/updat-note-pinned/:noteId", authenticateToken, async (req,res) =>{
             error:true,
             message: "Internal Server Error",
         })
+    }
+});
+
+// SearchNotes
+app.get("/search-notes/", authenticateToken, async(req,res) =>{
+    const { user } = req.user;
+    const { query } = req.query;
+
+    if(!query){
+        return res
+                .status(400)
+                .json({ error: true, message: "Search query is required" });
+    }
+
+    try{
+        
     }
 });
 
