@@ -6,7 +6,20 @@ import { useEffect } from 'react';
 const Navbar = ({ userInfo, onSearchNote , handleClearSearch }) => {
 
   const [searchQuery,setSearchQuery] = useState("");
+  const [isLoggedIn,setIsLoggedIn] = useState(false);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(userInfo){
+      setIsLoggedIn(true);
+    }
+
+    return () => {
+      
+    }
+  }, [])
+  
   
   const onLogout = () =>{
     localStorage.clear();
@@ -30,15 +43,16 @@ const Navbar = ({ userInfo, onSearchNote , handleClearSearch }) => {
   return (
     <div className="bg-white flex items-center justify-between px-2 py-2 drop-shadow">
         <h2 className='text-xl font-medium text-black py-2'>Notes</h2>
-        <SearchBar
+        {isLoggedIn &&  <SearchBar
          value = {searchQuery}
          onChange={({ target }) =>{
           setSearchQuery(target.value);
          }}
          handleSearch={handleSearch}
          onClearSearch={onClearSearch}
-        />
-        <ProfileInfo userInfo={userInfo} onLogout={onLogout}/>
+        />}
+        {isLoggedIn &&
+        <ProfileInfo userInfo={userInfo} onLogout={onLogout}/>}
     </div>
   )
 }
