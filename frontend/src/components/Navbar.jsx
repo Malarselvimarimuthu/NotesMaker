@@ -32,7 +32,7 @@ const Navbar = ({ userInfo, onSearchNote , handleClearSearch }) => {
     }
   };
 
-  // STOPPED HERE 2.39 
+  
   const onClearSearch = () =>
   {
     setSearchQuery("");

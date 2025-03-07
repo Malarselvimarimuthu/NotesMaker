@@ -253,6 +253,26 @@ app.get("/get-all-notes",authenticateToken, async(req,res)=>{
     }
 });
 
+// Retrieve Note with NoteID
+app.get("/get-note/:noteId",authenticateToken, async(req,res)=>{
+    const noteId = req.params.noteId;
+    const { user } = req.user;
+
+    try{
+        const note = await Note.find({_id:noteId ,userId: user._id});
+
+        return res.json({
+            error:false,
+            note,
+            message : "Note Retreived",
+        });
+    }catch(error){
+        return res
+                .status(500)
+                .json({error:true,message:"Internal Server Error"});
+    }
+});
+
 // Delete Note
 app.delete("/delete-note/:noteId",authenticateToken,async(req,res)=>{
     const noteId = req.params.noteId;
@@ -315,7 +335,7 @@ app.put("/update-note-pinned/:noteId", authenticateToken, async (req,res) =>{
     }
 });
 
-// SearchNotes //STOPPED HERE 2.33 
+// SearchNotes 
 app.get("/search-notes/", authenticateToken, async(req,res) =>{
     const { user } = req.user;
     const { query } = req.query;
